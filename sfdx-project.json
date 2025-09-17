@@ -1,0 +1,12 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true
+    }
+  ],
+  "name": "SFTest",
+  "namespace": "",
+  "sfdcLoginUrl": "https://cloudaware-7938--mvtest.sandbox.my.salesforce.com",
+  "sourceApiVersion": "64.0"
+}
