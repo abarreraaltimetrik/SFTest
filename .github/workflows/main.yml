@@ -1,0 +1,51 @@
+name: Deploy to Salesforce (JWT)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # optional: gate prod with an environment
+    environment: sandbox
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: npm i -g @salesforce/cli && sf --version
+        # You can also use a marketplace action to set up the CLI. 
+
+      - name: Write private key
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          chmod 600 server.key
+
+      - name: Authenticate to Salesforce (JWT)
+        run: |
+          sf org login jwt \
+            --username "${{ secrets.SF_USERNAME }}" \
+            --client-id "${{ secrets.SF_CONSUMER_KEY }}" \
+            --jwt-key-file server.key \
+            --instance-url "${{ vars.SF_INSTANCE_URL }}" \
+            --alias target --set-default
+        # Command/flags from official CLI auth plugin docs.
+
+      # ---- VALIDATE (no changes applied) ----
+      - name: Validate (dry-run) and capture Job Id
+        run: |
+          sf project deploy start \
+            --target-org target \
+            --source-dir force-app \
+            --test-level RunLocalTests \
+            --dry-run \
+            --json > validate.json
+          cat validate.json | jq -r '.result.id' > jobid.txt
+
+      # ---- QUICK DEPLOY (fast, uses validation id, prod only) ----
+      - name: Quick deploy validated build
+        run: |
+          JOB_ID=$(cat jobid.txt)
+          sf project deploy quick --target-org target --job-id "$JOB_ID" --wait 30
