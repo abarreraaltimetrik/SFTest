@@ -8,15 +8,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # optional: gate prod with an environment
     environment: sandbox
 
     steps:
       - uses: actions/checkout@v4
 
+      # Tools we rely on in later steps
+      - name: Install prerequisites (jq)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
       - name: Install Salesforce CLI
         run: npm i -g @salesforce/cli && sf --version
-        # You can also use a marketplace action to set up the CLI. 
 
       - name: Write private key
         run: |
@@ -31,21 +35,73 @@ jobs:
             --jwt-key-file server.key \
             --instance-url "${{ vars.SF_INSTANCE_URL }}" \
             --alias target --set-default
-        # Command/flags from official CLI auth plugin docs.
 
-      # ---- VALIDATE (no changes applied) ----
-      - name: Validate (dry-run) and capture Job Id
+      # --------- sanity checks / better error output ----------
+      - name: Confirm org auth + project layout
+        run: |
+          sf org display --target-org target --verbose --json | tee org.json
+          ls -la
+          test -f sfdx-project.json && cat sfdx-project.json || echo "No sfdx-project.json at repo root"
+          test -d force-app && echo "force-app exists" || echo "force-app MISSING"
+
+      - name: Preview what would deploy (helps catch path/package issues)
+        run: |
+          sf project deploy preview \
+            --target-org target \
+            --source-dir force-app \
+            --json | tee preview.json
+
+      # --------- VALIDATE (check-only) ----------
+      - name: Validate (check-only) and capture Job Id
+        id: validate
+        run: |
+          set -e
+          sf project deploy validate \
+            --target-org target \
+            --source-dir force-app \
+            --test-level RunLocalTests \
+            --json | tee validate.json
+
+          # Try common JSON shapes for the validation id
+          JOB_ID=$(jq -r '.result.id // .result.deployId // .deployId // empty' validate.json)
+          if [ -z "$JOB_ID" ]; then
+            echo "Could not find Job Id in validate.json. Full JSON follows:"
+            cat validate.json
+            exit 1
+          fi
+          echo "job_id=$JOB_ID" >> $GITHUB_OUTPUT
+          echo "Validation Job Id: $JOB_ID"
+
+      # --------- DEPLOY TO SANDBOX (normal deploy — Quick Deploy is prod-only) ----------
+      - name: Deploy to sandbox (normal deploy)
         run: |
           sf project deploy start \
             --target-org target \
             --source-dir force-app \
             --test-level RunLocalTests \
-            --dry-run \
-            --json > validate.json
-          cat validate.json | jq -r '.result.id' > jobid.txt
+            --wait 60 \
+            --json | tee deploy.json
 
-      # ---- QUICK DEPLOY (fast, uses validation id, prod only) ----
-      - name: Quick deploy validated build
+      # --------- Always capture CLI logs & artifacts for troubleshooting ----------
+      - name: Show last 2000 lines of sf CLI log
+        if: always()
         run: |
-          JOB_ID=$(cat jobid.txt)
-          sf project deploy quick --target-org target --job-id "$JOB_ID" --wait 30
+          LOGFILE=$(ls -1t ~/.sf/sf-*.log 2>/dev/null | head -n 1 || true)
+          if [ -n "$LOGFILE" ]; then
+            echo "== Tailing $LOGFILE =="
+            tail -n 2000 "$LOGFILE" || true
+          else
+            echo "No ~/.sf logs found"
+          fi
+
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sf-debug-artifacts
+          path: |
+            org.json
+            preview.json
+            validate.json
+            deploy.json
+            ~/.sf/sf-*.log
