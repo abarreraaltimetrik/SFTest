@@ -1,0 +1,10 @@
+<template>
+  <div class="modal">
+    <lightning-modal-header label={header} tabindex="-1">{subHeader}</lightning-modal-header>
+    <lightning-modal-body> {content} </lightning-modal-body>
+    <lightning-modal-footer>
+      <lightning-button label="No" onclick={handleNo} variant="destructive"></lightning-button>
+      <lightning-button label="Yes" onclick={handleYes} variant="success" data-id="yesButton"></lightning-button>
+    </lightning-modal-footer>
+  </div>
+</template>

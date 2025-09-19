@@ -1,0 +1,38 @@
+<template>
+  <lightning-card
+    title="We value your privacy"
+    icon-name="custom:custom14"
+    class="consent-cookie-toast slds-is-fixed"
+    style="visibility: hidden"
+  >
+    <div class="slds-var-m-around_medium">
+      <div>
+        <p style="justify-content: center">
+          We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our
+          traffic. By clicking "Accept All", you consent to our use of cookies.
+        </p>
+      </div>
+      <br />
+      <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-text-align_center">
+          <lightning-button class="button-customize" label="Customize" onclick={handleClickCustomize} stretch="true">
+          </lightning-button>
+        </div>
+        <div class="slds-col slds-text-align_center">
+          <lightning-button class="button-reject-all" label="Reject All" onclick={handleClickRejectAll} stretch="true">
+          </lightning-button>
+        </div>
+        <div class="slds-col slds-text-align_center">
+          <lightning-button
+            class="button-accept-all"
+            label="Accept All"
+            variant="brand"
+            onclick={handleClickAcceptAll}
+            stretch="true"
+          >
+          </lightning-button>
+        </div>
+      </div>
+    </div>
+  </lightning-card>
+</template>

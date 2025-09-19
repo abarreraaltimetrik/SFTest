@@ -1,0 +1,81 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Register",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"7e00e307-9a71-4a86-bbc5-ba2b1962333c\",\"columns\":[{\"UUID\":\"dfdf18b5-2ac2-4869-9ab1-2ec381e2386f\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"4\",\"seedComponents\":[]},{\"UUID\":\"35df0f7a-0925-48bd-9edd-0de79eb9b72e\",\"columnName\":\"Column 2\",\"columnKey\":\"fe9af\",\"columnWidth\":\"4\",\"seedComponents\":[]},{\"UUID\":\"b62cccb4-402f-4890-9f51-4aa3a7a14553\",\"columnName\":\"Column 3\",\"columnKey\":\"21f31\",\"columnWidth\":\"4\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "dfdf18b5-2ac2-4869-9ab1-2ec381e2386f",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          }, {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:registerComponent",
+              "id" : "8b3df231-913a-458c-8164-24d768b38068",
+              "type" : "component"
+            } ],
+            "id" : "35df0f7a-0925-48bd-9edd-0de79eb9b72e",
+            "name" : "fe9af",
+            "title" : "Column 2",
+            "type" : "region"
+          }, {
+            "id" : "b62cccb4-402f-4890-9f51-4aa3a7a14553",
+            "name" : "21f31",
+            "title" : "Column 3",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "7e00e307-9a71-4a86-bbc5-ba2b1962333c",
+          "type" : "component"
+        } ],
+        "id" : "8fe2c576-f0ad-449d-9843-a5967137f75d",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Register",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "b58d164f-47cc-4bb4-8bea-c2f30ec52864",
+          "type" : "component"
+        } ],
+        "id" : "1e426091-9c9a-44ff-b934-8d972f55ab38",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "8c28e96c-0405-4ca0-8ed4-cc2fd183af37",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "self-register"
+  },
+  "urlName" : "register"
+}

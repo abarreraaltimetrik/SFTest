@@ -1,0 +1,110 @@
+<template>
+  <lightning-card>
+    <form class="slds-form slds-form_stacked slds-var-m-around_medium">
+      <lightning-input
+        label="First Name"
+        name="firstName"
+        value={firstName}
+        onchange={handleInputChange}
+        placeholder="ex. Joe"
+        disabled={shouldDisableInputFields}
+        required
+        data-id="firstName"
+        maxlength="50"
+      >
+      </lightning-input>
+
+      <lightning-input
+        label="Last Name"
+        name="lastName"
+        value={lastName}
+        onchange={handleInputChange}
+        placeholder="ex. Doe"
+        disabled={shouldDisableInputFields}
+        required
+        data-id="lastName"
+        maxlength="50"
+      >
+      </lightning-input>
+
+      <lightning-input
+        label="NPI"
+        name="npi"
+        value={npi}
+        onchange={handleInputChange}
+        placeholder="ex. 1234567890"
+        disabled={shouldDisableInputFields}
+        data-id="npi"
+        maxlength="10"
+      >
+      </lightning-input>
+    </form>
+    <div class="slds-grid">
+      <div class="slds-size_1-of-2">
+        <!-- Submit Button -->
+        <lightning-button
+          class="slds-button"
+          variant="brand"
+          type="submit"
+          label="Submit"
+          disabled={shouldDisableSummitButton}
+          onclick={handleSubmitClick}
+        ></lightning-button>
+      </div>
+      <div class="slds-size_1-of-2">
+        <!-- Clear Button -->
+        <lightning-button
+          class="slds-button"
+          variant="brand"
+          type="button"
+          label="Clear"
+          disabled={isLoading}
+          onclick={handleClearClick}
+        ></lightning-button>
+      </div>
+    </div>
+    <!-- Spinner for loading -->
+    <template if:true={isLoading}>
+      <div class="slds-align_absolute-center">
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+    </template>
+
+    <!-- Show Request/Field Error -->
+    <template if:true={shouldShowError}>
+      <div class="slds-text-color_error slds-text-align_center slds-var-m-around_medium" role="alert">
+        <div>
+          <p>
+            <lightning-icon
+              icon-name="utility:error"
+              alternative-text="Error!"
+              variant="error"
+              title="Error!"
+              size="x-small"
+            >
+            </lightning-icon>
+            <template if:true={errorObject.title}> {errorObject.title} </template>
+            <template if:true={fieldErrorMessage}> {fieldErrorMessage} </template>
+          </p>
+        </div>
+        <template if:true={errorObject.message}>
+          <p>Message: {errorObject.message}</p>
+        </template>
+        <template if:true={errorObject.code}>
+          <p>Code: {errorObject.code}</p>
+        </template>
+        <template if:true={errorObject.status}>
+          <p>Status: {errorObject.status}</p>
+        </template>
+      </div>
+    </template>
+
+    <!-- Result Content -->
+    <lightning-card>
+      <template if:true={result}>
+        <div class="card-subtitle">Search Result Data</div>
+      </template>
+      <div class={jsonViewerContainerClass}></div>
+    </lightning-card>
+  </lightning-card>
+</template>

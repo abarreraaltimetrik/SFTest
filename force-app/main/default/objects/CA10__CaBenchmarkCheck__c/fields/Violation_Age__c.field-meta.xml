@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Violation_Age__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (
+Is_Closed__c = true &amp;&amp; CA10__status__c = &apos;INCOMPLIANT&apos;,
+CA10__closeDate__c - CreatedDate,
+IF (
+Is_Closed__c = false &amp;&amp; CA10__status__c = &apos;INCOMPLIANT&apos;,
+NOW () - CreatedDate,
+null
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Violation Age (Days)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

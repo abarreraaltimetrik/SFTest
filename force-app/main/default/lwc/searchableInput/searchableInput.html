@@ -1,0 +1,44 @@
+<template>
+  <div class="slds-form-element">
+    <label class="slds-form-element__label">
+      <abbr if:true={required} class="slds-required" title="required">* </abbr>{label}</label
+    >
+
+    <div class="slds-form-element__control">
+      <lightning-input
+        label={label}
+        onchange={search}
+        onfocus={showPickListOptions}
+        onclick={showPickListOptions}
+        oncommit={handleClear}
+        type="search"
+        value={selectedValue}
+        disabled={disabled}
+        placeholder={placeholder}
+        is-loading={isLoading}
+        variant="label-hidden"
+      >
+      </lightning-input>
+
+      <div if:true={hasResults} class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+          <template for:each={searchResults} for:item="searchResult">
+            <li
+              key={searchResult.value}
+              data-value={searchResult.value}
+              role="presentation"
+              onclick={selectSearchResult}
+              class="slds-listbox__item"
+            >
+              <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                <span class="slds-media__body">
+                  <span class="slds-truncate" title={searchResult.label}>{searchResult.label}</span>
+                </span>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,31 @@
+.card-title {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.slds-table--cell-buffer tr > td,
+.slds-table--cell-buffer tr > th,
+.slds-table_cell-buffer tr > td,
+.slds-table_cell-buffer tr > th {
+  padding: 0.5rem;
+}
+
+.batches-table thead th {
+  background-color: #d3d3d3;
+}
+
+.batches-content button {
+  margin: 10px 0px 10px 0px;
+  width: 100%;
+}
+
+.expanded-content {
+  background-color: #e8f0fe;
+  border: 1px solid #d8dde6;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.results-table {
+  background-color: white;
+}

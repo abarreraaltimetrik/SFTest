@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FieldSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Propelus_Signup_Extra_Fields</fullName>
+    <description>For Signup flow</description>
+    <displayedFields>
+        <field>Job_Title_Prop__c</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>true</isRequired>
+    </displayedFields>
+    <label>Propelus Signup Extra Fields</label>
+</FieldSet>

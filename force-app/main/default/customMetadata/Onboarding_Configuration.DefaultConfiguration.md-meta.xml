@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default Configuration</label>
+    <protected>false</protected>
+    <values>
+        <field>Onboarding_Body__c</field>
+        <value xsi:type="xsd:string">{
+      &quot;account&quot;: &quot;ONBOARDING_PAYLOAD_ACCOUNT_ID&quot;,
+      &quot;account_name&quot;: &quot;ONBOARDING_PAYLOAD_ACCOUNT_NAME&quot;,
+      &quot;apiAccess&quot;: {
+      &quot;usagePlanName&quot;: &quot;prop-psv-api-prod-usageplan-basic-quota&quot;
+      },
+      &quot;redirect_uri&quot;: [
+      &quot;http://localhost:8000/login&quot;
+      ],
+      &quot;scope&quot;: {
+      &quot;identitySearch&quot;: {
+      &quot;addressMatchAccuracy&quot;: &quot;MEDIUM&quot;,
+      &quot;config&quot;: {
+      &quot;productId&quot;: &quot;ABDS12397794&quot;
+      },
+      &quot;dobMatchAccuracy&quot;: &quot;MEDIUM&quot;,
+      &quot;licenseMatchAccuracy&quot;: &quot;EXACT&quot;,
+      &quot;matches&quot;: {
+      &quot;and&quot;: [
+      &quot;name&quot;
+      ],
+      &quot;or&quot;: [
+      &quot;DUNSnumber&quot;,
+      &quot;city&quot;,
+      &quot;state&quot;,
+      &quot;zipCode&quot;,
+      &quot;NPI&quot;,
+      &quot;SSN&quot;,
+      &quot;address&quot;,
+      &quot;license&quot;,
+      &quot;dob&quot;
+      ]
+      },
+      &quot;nameMatchAccuracy&quot;: &quot;LOW&quot;,
+      &quot;npiMatchAccuracy&quot;: &quot;EXACT&quot;,
+      &quot;ssnMatchAccuracy&quot;: &quot;EXACT&quot;,
+      &quot;uris&quot;: [
+      {
+      &quot;uri&quot;: &quot;/v1/identity/search&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/auth/profile&quot;
+      }
+      ]
+      },
+      &quot;licenses&quot;: {
+      &quot;config&quot;: {
+      &quot;allowedProfessions&quot;: [
+      &quot;PRFA&quot;,
+      &quot;PRFB&quot;,
+      &quot;CRRN&quot;,
+      &quot;AUD&quot;,
+      &quot;RN&quot;,
+      &quot;DDS&quot;,
+      &quot;RRT&quot;
+      ],
+      &quot;allowedStates&quot;: [
+      &quot;FL&quot;,
+      &quot;AZ&quot;,
+      &quot;CERT&quot;,
+      &quot;CA&quot;
+      ],
+      &quot;batchTimeToLive&quot;: &quot;1d&quot;,
+      &quot;maxBatchSize&quot;: &quot;5&quot;,
+      &quot;productId&quot;: &quot;License Verification&quot;,
+      &quot;restrictedProfessions&quot;: [
+      ],
+      &quot;restrictedStates&quot;: [
+      ]
+      },
+      &quot;uris&quot;: [
+      {
+      &quot;uri&quot;: &quot;/v1/licenses/results/{batchId}&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/licenses/verify&quot;
+      }
+      ]
+      },
+      &quot;professionals&quot;: {
+      &quot;config&quot;: {
+      &quot;allowedProducts&quot;: [
+      {
+      &quot;name&quot;: &quot;licenseVerification&quot;
+      },
+      {
+      &quot;name&quot;: &quot;exclusionsCore&quot;
+      }
+      ],
+      &quot;productId&quot;: &quot;PROFESSIONALS&quot;
+      },
+      &quot;uris&quot;: [
+      {
+      &quot;uri&quot;: &quot;/v1/professionals&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/professionals/{professional_id}&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/professionals/{professional_id}/licenses&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/professionals/{professional_id}/licenses/{license_id}&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/professionals/{professional_id}/monitoring&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/professionals/{professional_id}/monitoring/details&quot;
+      }
+      ]
+      },
+      &quot;text-extractor&quot;: {
+      &quot;uris&quot;: [
+      {
+      &quot;apiKey&quot;: &quot;sbhcruMY219WERAhdEzoA4PeLBk1QG0A4n4Ax5EJ&quot;,
+      &quot;uri&quot;: &quot;/v1/text-extractor&quot;
+      },
+      {
+      &quot;apiKey&quot;: &quot;sbhcruMY219WERAhdEzoA4PeLBk1QG0A4n4Ax5EJ&quot;,
+      &quot;uri&quot;: &quot;/v1/presigned-url/{filename}&quot;
+      },
+      {
+      &quot;apiKey&quot;: &quot;sbhcruMY219WERAhdEzoA4PeLBk1QG0A4n4Ax5EJ&quot;,
+      &quot;uri&quot;: &quot;/api/ocr/text-extractor&quot;
+      },
+      {
+      &quot;apiKey&quot;: &quot;sbhcruMY219WERAhdEzoA4PeLBk1QG0A4n4Ax5EJ&quot;,
+      &quot;uri&quot;: &quot;/api/ocr/subjects-comparison&quot;
+      }
+      ]
+      },
+      &quot;webhooks&quot;: {
+      &quot;config&quot;: {
+      &quot;productId&quot;: &quot;Webhooks&quot;
+      },
+      &quot;uris&quot;: [
+      {
+      &quot;uri&quot;: &quot;/v1/webhooks&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/webhooks/{web_hook_id}&quot;
+      },
+      {
+      &quot;uri&quot;: &quot;/v1/webhooks/{web_hook_id}/activate/{activation_code}&quot;
+      }
+      ]
+      }
+      },
+      &quot;sfdc_client_id&quot;: &quot;ONBOARDING_PAYLOAD_SFDC_CLIENT_ID&quot;,
+      &quot;sfdc_id&quot;: &quot;ONBOARDING_PAYLOAD_SFDC_ID&quot;,
+      &quot;usersList&quot;: [
+      &quot;ONBOARDING_PAYLOAD_ACCOUNT_USER_EMAIL&quot;
+      ]
+      }</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,6 @@
+.consent-cookie-toast {
+  width: 500px;
+  bottom: 40px;
+  left: 40px;
+  z-index: 100;
+}

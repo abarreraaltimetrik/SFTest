@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DigitalExperienceConfig xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Customer Onboarding</label>
+    <site>
+        <urlPathPrefix>onboarding</urlPathPrefix>
+    </site>
+    <space>site/Customer_Onboarding1</space>
+</DigitalExperienceConfig>

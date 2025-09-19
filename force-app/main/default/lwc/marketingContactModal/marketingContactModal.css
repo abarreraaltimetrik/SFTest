@@ -1,0 +1,14 @@
+.modal {
+  --slds-c-modal-header-color-background: var(--dxp-g-neutral-contrast-3, #ffffff);
+  --slds-c-modal-content-color-background: var(--slds-c-modal-header-color-background);
+  /* --slds-c-modal-footer-color-background: var(--slds-c-modal-header-color-background); */
+  background-color: var(--dxp-c-background-color);
+  border-radius: 10px;
+  box-shadow: 8px 7px 8px 0 rgba(24, 30, 75, 0.2);
+}
+
+.slds-button {
+  margin: var(--dxp-g-spacing-medium);
+  padding: 1em 2.5rem;
+  border-radius: 0.5rem;
+}

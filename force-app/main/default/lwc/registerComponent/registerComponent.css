@@ -1,0 +1,111 @@
+.otp-container {
+  width: 100%;
+  max-width: 550px;
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+}
+
+.otp-container p {
+  background-color: #caf2df;
+  color: #3b8763;
+  padding: 10px 5px;
+  border-radius: 5px;
+}
+
+.spinner-container {
+  background: rgb(255 255 255 / 78%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 2;
+  border-radius: inherit;
+}
+
+.otp-input {
+  display: inline-block;
+  margin: 0px 5px;
+  width: 40px;
+}
+
+.propelus-container {
+  background-color: white;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.propelus-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.propelus-logo img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.propelus-logo h1 {
+  color: #1a237e;
+  font-size: 24px;
+  margin: 0;
+}
+
+.propelus-message {
+  background-color: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-header {
+  font-weight: bold;
+}
+
+.signup-copy {
+  text-align: justify;
+}
+
+.propelus-message h2 {
+  color: #2e7d32;
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.propelus-message p {
+  color: #1a237e;
+  margin-bottom: 0;
+}
+
+.timer {
+  font-weight: bold;
+}
+
+.request-otp-button {
+  --slds-c-button-brand-color-background: #4caf50;
+  --slds-c-button-brand-color-background-hover: #45a049;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #c9c7c5;
+  border-color: #c9c7c5;
+  color: #fff;
+}
+
+.submitButton {
+  transition: all 0.3s ease;
+}
+
+.submitButton:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: none;
+}

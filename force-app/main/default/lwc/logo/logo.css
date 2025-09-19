@@ -1,0 +1,9 @@
+.propelus-logo {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.propelus-logo img {
+  width: 300px;
+}

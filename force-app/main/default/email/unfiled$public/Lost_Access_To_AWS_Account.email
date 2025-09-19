@@ -1,0 +1,4 @@
+AWS Account Name: {!CA10__CaAwsAccount__c.Name}
+Account ID:{!CA10__CaAwsAccount__c.CA10__accountId__c}
+
+Details: {!CA10__CaAwsAccount__c.Link}

@@ -1,0 +1,270 @@
+<template>
+  <template lwc:if={registerExecute}>
+    <div class="propelus-form slds-p-around_medium slds-m-around_medium">
+      <div class="slds-text-align_center slds-m-top_medium">
+        <h2 class="dxp-text-heading-large welcome-header">{welcomeHeader}</h2>
+        <p class="slds-justify-text slds-m-around_medium signup-copy">{signUpCopy}</p>
+      </div>
+      <template if:true={isLoading}>
+        <div class="spinner-container slds-align_absolute-center">
+          <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+      </template>
+      <template lwc:if={errorMessage}>
+        <div class="slds-text-color_error slds-text-align_center slds-m-around_medium">
+          <lightning-formatted-rich-text style="text-align: center" value={errorMessageFormatted}>
+          </lightning-formatted-rich-text>
+        </div>
+      </template>
+      <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            name="firstName"
+            class="inputFirstName slds-m-around_medium"
+            label="First Name"
+            maxlength="100"
+            required
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            name="lastName"
+            class="inputLastName slds-m-around_medium"
+            label="Last Name"
+            maxlength="100"
+            required
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            type="email"
+            name="email"
+            class="inputEmail slds-m-around_medium"
+            pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+            message-when-pattern-mismatch="Please add a valid email address."
+            label="Email"
+            maxlength="100"
+            required
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            name="companyName"
+            class="inputCompanyName slds-m-around_medium"
+            label="Company Name"
+            maxlength="100"
+            required
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            name="jobTitle"
+            class="inputJobTitle slds-m-around_medium"
+            label="Job Title"
+            maxlength="100"
+            required
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            type="tel"
+            label="Phone Number"
+            class="inputPhoneNumber slds-m-around_medium"
+            name="phone"
+            value=""
+            max-length="13"
+            onkeyup={formatPhoneNumber}
+            onkeydown={beginPhoneNumberInput}
+            pattern="^\(\d{3}\)\d{3}-\d{4}$"
+            message-when-pattern-mismatch="Please add a valid phone number with the format (000)000-0000."
+            placeholder="(000)000-0000"
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+          <div style="position: relative; float: right; z-index: 1; right: 15px">
+            <a style="pointer-events: auto" onclick={revealPassword}>
+              <lightning-icon
+                class="passwordIcon"
+                icon-name={passwordIcon}
+                variant="success"
+                style="padding: 5px"
+                size="small"
+                alternative-text="Search Icon"
+              ></lightning-icon>
+              {showPassword}
+            </a>
+          </div>
+
+          <lightning-input
+            type="password"
+            data-id="inputPassword"
+            name="password"
+            class="inputPassword slds-m-around_medium"
+            label="Password"
+            maxlength="100"
+            onchange={checkPasswords}
+            required
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+          <div style="position: relative; float: right; z-index: 1; right: 15px">
+            <a style="pointer-events: auto" onclick={revealConfirmPassword}>
+              <lightning-icon
+                class="confirmPasswordIcon"
+                icon-name={passwordConfirmIcon}
+                variant="success"
+                style="padding: 5px"
+                size="small"
+                alternative-text="Search Icon"
+              ></lightning-icon>
+              {showConfirmPassword}
+            </a>
+          </div>
+
+          <lightning-input
+            type="password"
+            data-id="inputConfirmPassword"
+            name="confirmPassword"
+            class="inputConfirmPassword slds-m-around_medium"
+            label="Confirm Password"
+            maxlength="100"
+            onchange={checkPasswords}
+            required
+          ></lightning-input>
+        </div>
+      </div>
+
+      <!--  <div class="slds-m-top_large">
+          <label class="slds-hide">Sign Up</label>
+          <button
+            class="submitButton slds-show slds-size_full radius-border-pill"
+            onclick={handleRegister}
+            aria-label="Sign Up"
+          >
+            Sign Up
+          </button>
+        </div> -->
+
+      <div class="slds-text-align_center slds-m-around_medium">
+        <p>
+          By registering, you agree to the&nbsp;
+          <a href={termsUrl} style="color: inherit; text-decoration: underline" target="_blank">terms</a>
+          &nbsp;and you agree to be contacted by Propelus.
+        </p>
+      </div>
+
+      <lightning-button
+        class="submitButton slds-button"
+        variant="brand"
+        type="button"
+        label="Sign Up"
+        disabled={isDisable}
+        onclick={handleRegister}
+      >
+      </lightning-button>
+      <div class="slds-m-top_small slds-text-align_center">
+        <a href="/login">Already have an account?</a>
+      </div>
+    </div>
+  </template>
+
+  <template lwc:if={otpExecute}>
+    <div class="slds-align_absolute-center">
+      <div class="otp-container">
+        <template if:true={isLoading}>
+          <div class="spinner-container slds-align_absolute-center">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+          </div>
+        </template>
+        <div class="slds-p-around_large">
+          <p class="slds-text-align_center slds-m-top_medium">
+            Enter your One Time Password (OTP) received on your email
+          </p>
+
+          <div class="slds-m-around_none slds-text-align_center">
+            <lightning-input
+              class="otp-input"
+              maxlength="1"
+              type="number"
+              onkeyup={handleNextElement}
+              onchange={handleOTPChange1}
+              onclick={handleOnClick}
+              tabindex="0"
+              data-id="otp1"
+            ></lightning-input>
+            <lightning-input
+              class="otp-input"
+              maxlength="1"
+              type="number"
+              value={otp2}
+              onchange={handleOTPChange2}
+              onkeyup={handleNextElement}
+              data-id="otp2"
+            ></lightning-input>
+            <lightning-input
+              class="otp-input"
+              maxlength="1"
+              type="number"
+              value={otp3}
+              data-id="otp3"
+              onchange={handleOTPChange3}
+              onkeyup={handleNextElement}
+            ></lightning-input>
+            <lightning-input
+              class="otp-input"
+              maxlength="1"
+              type="number"
+              onchange={handleOTPChange4}
+              data-id="otp4"
+              onkeyup={handleNextElement}
+            ></lightning-input>
+            <lightning-input
+              class="otp-input"
+              maxlength="1"
+              type="number"
+              onchange={handleOTPChange5}
+              onkeyup={handleNextElement}
+              data-id="otp5"
+            ></lightning-input>
+            <lightning-input
+              class="otp-input"
+              maxlength="1"
+              type="number"
+              onkeyup={handleNextElement}
+              onchange={handleOTPChange6}
+              data-id="otp6"
+            ></lightning-input>
+          </div>
+
+          <template lwc:if={errorMessage}>
+            <div class="slds-text-color_error slds-text-align_center slds-m-top_small">{errorMessage}</div>
+          </template>
+          <div class="slds-text-align_center slds-m-top_medium">
+            <lightning-button
+              if:true={errorMessage}
+              label="Request New OTP"
+              variant="brand"
+              onclick={handleRequestNewOTP}
+              class="request-otp-button"
+            ></lightning-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template lwc:if={showTimer}>
+    <lightning-card if:true={showTimer} title="OTP successfully validated" icon-name="standard:check">
+      <template if:true={showTimer}>
+        <div class="propelus-container">
+          <div class="propelus-message">
+            <p>
+              We are setting up your account which may take a few minutes. Once setup is complete, you will be
+              redirected to your account. Time remaining to login: <span class="timer">{formattedTime}</span>
+            </p>
+          </div>
+        </div>
+      </template>
+    </lightning-card>
+  </template>
+</template>
