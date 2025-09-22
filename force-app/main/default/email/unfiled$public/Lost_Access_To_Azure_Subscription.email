@@ -1,4 +1,0 @@
-Subscription Name: {!CA10__CaAzureAccount__c.Name}
-Subscription ID: {!CA10__CaAzureAccount__c.CA10__subscriptionId__c}
-
-Details: {!CA10__CaAzureAccount__c.Link}
