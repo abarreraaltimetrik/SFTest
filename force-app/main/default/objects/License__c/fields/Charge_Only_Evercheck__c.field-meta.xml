@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Charge_Only_Evercheck__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether to charge Evercheck fee but not the board.</description>
+    <label>Charge Evercheck Fee But Not Board</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

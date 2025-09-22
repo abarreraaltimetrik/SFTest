@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Verification_Type__c</fullName>
+    <label>Verification Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>REACTIVATED - MANUAL</fullName>
+                <default>false</default>
+                <label>REACTIVATED - MANUAL</label>
+            </value>
+            <value>
+                <fullName>INTERRUPTED</fullName>
+                <default>false</default>
+                <label>INTERRUPTED</label>
+            </value>
+            <value>
+                <fullName>INITIAL</fullName>
+                <default>false</default>
+                <label>INITIAL</label>
+            </value>
+            <value>
+                <fullName>SCHEDULED</fullName>
+                <default>false</default>
+                <label>SCHEDULED</label>
+            </value>
+            <value>
+                <fullName>RENEWAL</fullName>
+                <default>false</default>
+                <label>RENEWAL</label>
+            </value>
+            <value>
+                <fullName>REACTIVATED - INTERRUPTED</fullName>
+                <default>false</default>
+                <label>REACTIVATED - INTERRUPTED</label>
+            </value>
+            <value>
+                <fullName>BLANK</fullName>
+                <default>false</default>
+                <label>BLANK</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <label>Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CANDIDATE</fullName>
+                <default>false</default>
+                <label>CANDIDATE</label>
+            </value>
+            <value>
+                <fullName>EMPLOYEE</fullName>
+                <default>false</default>
+                <label>EMPLOYEE</label>
+            </value>
+            <value>
+                <fullName>LV-PUBLIC-API</fullName>
+                <default>false</default>
+                <label>LV-PUBLIC-API</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

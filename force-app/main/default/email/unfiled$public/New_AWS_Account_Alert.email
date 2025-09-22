@@ -1,4 +1,0 @@
-New AWS Account was created. Please check it: 
-Account Name: {!CA10__CaAwsAccount__c.Name} 
-Account ID: {!CA10__CaAwsAccount__c.CA10__accountId__c} 
-{!CA10__CaAwsAccount__c.Link}

@@ -1,4 +1,0 @@
-New Azure Account was created. Please check it: 
-Account Name: {!CA10__CaAzureAccount__c.Name} 
-Subscription ID: {!CA10__CaAzureAccount__c.CA10__subscriptionId__c} 
-{!CA10__CaAzureAccount__c.Link}

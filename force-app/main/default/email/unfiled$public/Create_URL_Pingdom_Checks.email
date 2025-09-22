@@ -1,5 +1,0 @@
-Hi,
-
-There is a new Pingdom Check {!CA10__CaPingdomCheck2__c.CA10__hostName__c} in the system. You need
-to create a URL for it.
-{!CA10__CaPingdomCheck2__c.Link}

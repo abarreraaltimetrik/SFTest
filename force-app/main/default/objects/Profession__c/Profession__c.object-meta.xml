@@ -141,25 +141,37 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>false</enableActivities>
+    <description>Stores information about Professions, including identifiers, website details, configuration options, verification type and complexity.</description>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>false</enableReports>
-    <enableSearch>false</enableSearch>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <label>Profession</label>
     <nameField>
-        <label>Name</label>
+        <label>Profession</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Professions</pluralLabel>
-    <searchLayouts></searchLayouts>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Profession_Code__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Profession_ID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PKID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Board_ID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Board_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Complexity__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Website__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>MV_Guide__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
