@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MV_Source__c</fullName>
+    <label>MV Source</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>MV1.0</fullName>
+                <default>false</default>
+                <label>MV1.0</label>
+            </value>
+            <value>
+                <fullName>MV2.0</fullName>
+                <default>false</default>
+                <label>MV2.0</label>
+            </value>
+            <value>
+                <fullName>DataSolutions</fullName>
+                <default>false</default>
+                <label>DataSolutions</label>
+            </value>
+            <value>
+                <fullName>CEB</fullName>
+                <default>false</default>
+                <label>CEB</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NPA_Verification_PIN__c</fullName>
+    <description>Custom field that is required to verify certifications issued by the National Phelbotomy Association</description>
+    <externalId>false</externalId>
+    <label>NPA Verification PIN</label>
+    <length>10</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

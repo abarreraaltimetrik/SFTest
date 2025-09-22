@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Verification_Status__c</fullName>
+    <label>Verification Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>COMPLETED</fullName>
+                <default>false</default>
+                <label>COMPLETED</label>
+            </value>
+            <value>
+                <fullName>QUEUED</fullName>
+                <default>false</default>
+                <label>QUEUED</label>
+            </value>
+            <value>
+                <fullName>DELETED</fullName>
+                <default>false</default>
+                <label>DELETED</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
