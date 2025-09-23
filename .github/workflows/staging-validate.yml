@@ -32,7 +32,7 @@ jobs:
           echo "${{ secrets.SF_JWT_KEY }}" > jwt.key
           sf org login jwt --username "${{ secrets.SF_DEMO_USERNAME }}" \
             --jwt-key-file jwt.key --client-id "${{ secrets.SF_CONSUMER_KEY }}" \
-            --instance-url "${{ secrets.SF_LOGIN_URL }}" --alias MVDemo --set-default
+            --instance-url "${{ vars.SF_INSTANCE_URL }}" --alias MVDemo --set-default
           sf config set org-api-version="$SF_API_VERSION"
 
       - name: Validate force-app (check-only, no tests)
