@@ -1,0 +1,51 @@
+name: Deploy to Production
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prod-deploy
+  cancel-in-progress: false   # let a running prod deploy finish
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SF_API_VERSION: ${{ vars.SF_API_VERSION || '61.0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+
+      - name: Install Salesforce CLI
+        run: npm i -g @salesforce/cli@${{ vars.SF_CLI_VERSION || 'latest' }}
+
+      - name: Auth Prod (JWT)
+        run: |
+          set -euo pipefail
+          trap 'shred -u jwt.key || rm -f jwt.key' EXIT
+          echo "${{ secrets.SF_JWT_KEY }}" > jwt.key
+          sf org login jwt --username "${{ secrets.SF_PROD_USERNAME }}" \
+            --jwt-key-file jwt.key --client-id "${{ secrets.SF_CONSUMER_KEY }}" \
+            --instance-url "${{ secrets.SF_LOGIN_URL }}" --alias Prod --set-default
+          sf config set org-api-version="$SF_API_VERSION"
+
+      - name: Deploy ALL of force-app (RunLocalTests)
+        run: |
+          sf project deploy start \
+            --target-org Prod \
+            --source-dir force-app \
+            --test-level RunLocalTests \
+            --wait 120 \
+            --api-version "$SF_API_VERSION" \
+            --json | tee prod-deploy.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prod-deploy
+          path: prod-deploy.json
