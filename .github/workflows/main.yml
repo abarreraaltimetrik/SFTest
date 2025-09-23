@@ -44,13 +44,6 @@ jobs:
             --json | tee orgquery.json
 
       # --------- sanity checks / better error output ----------
-      - name: Confirm org auth + project layout
-        run: |
-          sf org display --target-org target --verbose --json | tee org.json
-          ls -la
-          test -f sfdx-project.json && cat sfdx-project.json || echo "No sfdx-project.json at repo root"
-          test -d force-app && echo "force-app exists" || echo "force-app MISSING"
-
       - name: Preview what would deploy (helps catch path/package issues)
         run: |
           sf project deploy preview \
@@ -66,6 +59,7 @@ jobs:
           sf project deploy validate \
             --target-org target \
             --source-dir force-app \
+            --check-only \
             --test-level RunLocalTests \
             --json | tee validate.json
 
