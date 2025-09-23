@@ -38,6 +38,7 @@ jobs:
 
       - name: Validate force-app (check-only, no tests)
         run: |
+          set -euo pipefail
           sf project deploy start \
             --target-org MVDemo \
             --source-dir force-app \
