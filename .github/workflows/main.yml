@@ -26,7 +26,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       # Tools we rely on in later steps
       - name: Install prerequisites (jq)
@@ -53,13 +52,6 @@ jobs:
             --alias target --set-default
 
           sf config set org-api-version="$SF_API_VERSION"
-
-      - name: Permission probe (Organization query)
-        run: |
-          sf data query \
-            --target-org target \
-            --query "SELECT Id, Name, InstanceName, OrganizationType FROM Organization" \
-            --json | tee orgquery.json
 
       # --------- sanity checks / better error output ----------
       - name: Preview what would deploy (helps catch path/package issues)
