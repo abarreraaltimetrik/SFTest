@@ -5,13 +5,28 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-sandbox
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: sandbox
+    timeout-minutes: 60
+    env:
+      SF_API_VERSION: ${{ vars.SF_API_VERSION || '61.0' }}
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       # Tools we rely on in later steps
       - name: Install prerequisites (jq)
@@ -20,21 +35,24 @@ jobs:
           sudo apt-get install -y jq
 
       - name: Install Salesforce CLI
-        run: npm i -g @salesforce/cli && sf --version
+        run: npm i -g @salesforce/cli@${{ vars.SF_CLI_VERSION || 'latest' }} && sf --version
 
-      - name: Write private key
+      # Auth + key hygiene + API version pin
+      - name: Authenticate to Salesforce (JWT)
         run: |
+          set -euo pipefail
+          trap 'shred -u server.key || rm -f server.key' EXIT
           echo "${{ secrets.SF_JWT_KEY }}" > server.key
           chmod 600 server.key
 
-      - name: Authenticate to Salesforce (JWT)
-        run: |
           sf org login jwt \
             --username "${{ secrets.SF_USERNAME }}" \
             --client-id "${{ secrets.SF_CONSUMER_KEY }}" \
             --jwt-key-file server.key \
             --instance-url "${{ vars.SF_INSTANCE_URL }}" \
             --alias target --set-default
+
+          sf config set org-api-version="$SF_API_VERSION"
 
       - name: Permission probe (Organization query)
         run: |
@@ -51,35 +69,25 @@ jobs:
             --source-dir force-app \
             --json | tee preview.json
 
-      # --------- VALIDATE (check-only) ----------
-      - name: Validate (check-only) and capture Job Id
-        id: validate
+      # --------- VALIDATE for SANDBOX (tests against PR code, no Job Id needed) ----------
+      - name: Validate in sandbox (dry-run with tests)
         run: |
-          set -e
-          sf project deploy validate \
+          sf project deploy start \
             --target-org target \
             --source-dir force-app \
-            --check-only \
+            --dry-run \
             --test-level RunLocalTests \
+            --wait 90 \
             --json | tee validate.json
 
-          # Try common JSON shapes for the validation id
-          JOB_ID=$(jq -r '.result.id // .result.deployId // .deployId // empty' validate.json)
-          if [ -z "$JOB_ID" ]; then
-            echo "Could not find Job Id in validate.json. Full JSON follows:"
-            cat validate.json
-            exit 1
-          fi
-          echo "job_id=$JOB_ID" >> $GITHUB_OUTPUT
-          echo "Validation Job Id: $JOB_ID"
-
-      # --------- DEPLOY TO SANDBOX (normal deploy — Quick Deploy is prod-only) ----------
+      # --------- DEPLOY TO SANDBOX (normal deploy) ----------
+      # Since tests already ran in the dry-run above, NoTestRun is typical for sandboxes.
       - name: Deploy to sandbox (normal deploy)
         run: |
           sf project deploy start \
             --target-org target \
             --source-dir force-app \
-            --test-level RunLocalTests \
+            --test-level NoTestRun \
             --wait 60 \
             --json | tee deploy.json
 
@@ -101,7 +109,7 @@ jobs:
         with:
           name: sf-debug-artifacts
           path: |
-            org.json
+            orgquery.json
             preview.json
             validate.json
             deploy.json
