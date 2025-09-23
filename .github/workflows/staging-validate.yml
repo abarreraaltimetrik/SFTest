@@ -1,0 +1,53 @@
+name: Staging PR Validate
+on:
+  pull_request:
+    branches: [ "staging" ]
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    environment: sandbox
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SF_API_VERSION: ${{ vars.SF_API_VERSION || '61.0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - name: Install Salesforce CLI
+        run: npm i -g @salesforce/cli@${{ vars.SF_CLI_VERSION || 'latest' }}
+
+      - name: Auth MVDemo (JWT)
+        run: |
+          set -euo pipefail
+          trap 'shred -u jwt.key || rm -f jwt.key' EXIT
+          echo "${{ secrets.SF_JWT_KEY }}" > jwt.key
+          sf org login jwt --username "${{ secrets.SF_USERNAME }}" \
+            --jwt-key-file jwt.key --client-id "${{ secrets.SF_CONSUMER_KEY }}" \
+            --instance-url "${{ vars.SF_INSTANCE_URL }}" --alias MVDemo --set-default
+          sf config set org-api-version="$SF_API_VERSION"
+
+      - name: Validate force-app (check-only, no tests)
+        run: |
+          set -euo pipefail
+          sf project deploy start \
+            --target-org MVDemo \
+            --source-dir force-app \
+            --test-level NoTestRun \
+            --api-version "$SF_API_VERSION" \
+            --json | tee staging-validate.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staging-validate
+          path: staging-validate.json
