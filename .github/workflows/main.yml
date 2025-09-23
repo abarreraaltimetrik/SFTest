@@ -1,7 +1,7 @@
 name: Deploy to Salesforce (JWT)
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
   workflow_dispatch:
 
@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
     environment: sandbox
     timeout-minutes: 60
@@ -21,22 +21,17 @@ jobs:
       SF_API_VERSION: ${{ vars.SF_API_VERSION || '61.0' }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - name: Checkout pull request code
+        uses: actions/checkout@v4
         with:
-          node-version: '20'
-
-      # Tools we rely on in later steps
-      - name: Install prerequisites (jq)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
+          # Fetches the merge commit, which contains all changes from the PR branch
+          # merged into the base branch (main).
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
 
       - name: Install Salesforce CLI
         run: npm i -g @salesforce/cli@${{ vars.SF_CLI_VERSION || 'latest' }} && sf --version
 
-      # Auth + key hygiene + API version pin
       - name: Authenticate to Salesforce (JWT)
         run: |
           set -euo pipefail
@@ -50,18 +45,9 @@ jobs:
             --jwt-key-file server.key \
             --instance-url "${{ vars.SF_INSTANCE_URL }}" \
             --alias target --set-default
-
+          
           sf config set org-api-version="$SF_API_VERSION"
 
-      # --------- sanity checks / better error output ----------
-      - name: Preview what would deploy (helps catch path/package issues)
-        run: |
-          sf project deploy preview \
-            --target-org target \
-            --source-dir force-app \
-            --json | tee preview.json
-
-      # --------- VALIDATE for SANDBOX (tests against PR code, no Job Id needed) ----------
       - name: Validate in sandbox (dry-run with tests)
         run: |
           sf project deploy start \
@@ -69,40 +55,4 @@ jobs:
             --source-dir force-app \
             --dry-run \
             --test-level RunLocalTests \
-            --wait 90 \
-            --json | tee validate.json
-
-      # --------- DEPLOY TO SANDBOX (normal deploy) ----------
-      # Since tests already ran in the dry-run above, NoTestRun is typical for sandboxes.
-      - name: Deploy to sandbox (normal deploy)
-        run: |
-          sf project deploy start \
-            --target-org target \
-            --source-dir force-app \
-            --test-level NoTestRun \
-            --wait 60 \
-            --json | tee deploy.json
-
-      # --------- Always capture CLI logs & artifacts for troubleshooting ----------
-      - name: Show last 2000 lines of sf CLI log
-        if: always()
-        run: |
-          LOGFILE=$(ls -1t ~/.sf/sf-*.log 2>/dev/null | head -n 1 || true)
-          if [ -n "$LOGFILE" ]; then
-            echo "== Tailing $LOGFILE =="
-            tail -n 2000 "$LOGFILE" || true
-          else
-            echo "No ~/.sf logs found"
-          fi
-
-      - name: Upload debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: sf-debug-artifacts
-          path: |
-            orgquery.json
-            preview.json
-            validate.json
-            deploy.json
-            ~/.sf/sf-*.log
+            --wait 90
